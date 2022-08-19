@@ -13,14 +13,13 @@ const db = mysql.createConnection(
     {
         host: 'localhost',
         user: 'root',
-        password: 'BlackPanda22!',
+        password: '',
         database: 'employeeManager_db'
     },
     console.log(`Connected to the employeeManager_db database.`)
 );
 
-function allManage() {
-    console.log(`
+console.log(`
 ________________________________
 
         EMPLOYEE MANAGER
@@ -28,6 +27,9 @@ ________________________________
          By Freddy Kwak
 ________________________________
 `);
+
+function allManage() {
+
 
     inquirer
         .prompt([
