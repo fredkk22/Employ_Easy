@@ -43,7 +43,8 @@ function allManage() {
                 type: 'list',
                 message: "What would you like to do?",
                 choices: manageChoices,
-                name: "manageChoices"
+                name: "manageChoices",
+                loop: false
             }
         ])
         .then((data) => {
