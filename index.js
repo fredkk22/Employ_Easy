@@ -48,7 +48,7 @@ function allManage() {
             }
         ])
         .then((data) => {
-            if (data.manageChoices[0]) {
+            if (data.manageChoices[0] === manageChoices[0]) {
                 addDepartment();
             } else if (data.manageChoices === manageChoices[1]) {
                 addRole();
