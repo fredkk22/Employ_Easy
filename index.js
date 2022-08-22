@@ -7,8 +7,16 @@ const manageChoices = [
     "Add Employee",
     "View Departments",
     "View Roles",
-    "View Employees"
-]
+    "View Employees",
+    "Update Managers", 
+    "Remove Department",
+    "Remove Role",
+    "Remove Employee"
+];
+const updateManagerChoices = [
+    "Delete a manager",
+    "Add new manager"
+];
 const db = mysql.createConnection(
     {
         host: 'localhost',
@@ -29,8 +37,6 @@ ________________________________
 `);
 
 function allManage() {
-
-
     inquirer
         .prompt([
             {
@@ -41,7 +47,7 @@ function allManage() {
             }
         ])
         .then((data) => {
-            if (data.manageChoices === manageChoices[0]) {
+            if (data.manageChoices[0]) {
                 addDepartment();
             } else if (data.manageChoices === manageChoices[1]) {
                 addRole();
@@ -53,6 +59,14 @@ function allManage() {
                 viewRoles();
             } else if (data.manageChoices === manageChoices[5]) {
                 viewEmployees();
+            } else if (data.manageChoices === manageChoices[6]) {
+                updateManagers();
+            } else if (data.manageChoices === manageChoices[7]) {
+                deleteDepartment();
+            } else if (data.manageChoices === manageChoices[8]) {
+                deleteRole();
+            } else if (data.manageChoices === manageChoices[9]) {
+                deleteEmployee();
             }
         })
 }
@@ -186,6 +200,115 @@ function viewEmployees() {
         console.table(results);
         allManage();
     });
+}
+
+function updateManagers() {
+    inquirer
+    .prompt({
+        type: 'list',
+        message: 'What would you like to do with your managers?',
+        choices: updateManagerChoices,
+        name: 'updataManagers'
+    })
+    .then((data) => {
+        if (data.updateManagers = updateManagerChoices[0]) {
+            deleteManager();
+        } else if (data.updateManagers = updateManagerChoices[1]) {
+            addManager();
+        }
+    })
+}
+
+function addManager() {
+    inquirer
+    .prompt({
+        type: 'input',
+        message: 'What is the name of the new manager?',
+        name: 'newManager'
+    })
+    .then((data) => {
+        db.query(`INSERT INTO manager (name) VALUES (?);`, data.newManager, function (err) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`${data.newManager} has been added to the database!`);
+        })
+    })
+}
+
+function deleteManager() {
+    inquirer
+    .prompt({
+        type: 'input',
+        message: 'Which manager would you like to remove?',
+        name: 'deleteManager'
+    })
+    .then((data) => {
+        db.query(`DELETE FROM manager WHERE name = ?;`, data.deleteManager, function (err) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`${data.deleteManager} has been removed from the database!`);
+        })
+    })
+}
+
+function deleteDepartment() {
+    inquirer
+    .prompt({
+        type: 'input',
+        message: 'Which department would you like to remove?',
+        name: 'deleteDepartment'
+    })
+    .then((data) => {
+        db.query(`DELETE FROM department WHERE name = ?;`, data.deleteDepartment, function (err) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`${data.deleteDepartment} has been removed from the database!`);
+        })
+    })
+}
+
+function deleteEmployee() {
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            message: 'Enter the first name of the employee you would like to remove:',
+            name: 'delEmployeeFirst'
+        },
+        {
+            type: 'input',
+            message: 'Enter the last name of the employee you would like to remove:',
+            name: 'delEmployeeLast'
+        }
+    ])
+    .then((data) => {
+        db.query(`DELETE FROM employee WHERE first_name = ? AND last_name = ?;`, [data.delEmployeeFirst, data.delEmployeeLast], function (err) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`${data.delEmployeeFirst} ${data.delEmployeeLast} has been removed from the database!`);
+        })
+    })
+}
+
+function deleteRole() {
+    inquirer
+    .prompt({
+        type: 'input',
+        message: 'Which role would you like to remove?',
+        name: 'deleteRole'
+    })
+    .then((data) => {
+        db.query(`DELETE FROM role WHERE name = ?;`, data.deleteRole, function (err) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`${data.deleteRole} has been removed from the database!`);
+        })
+    })
 }
 
 allManage();
