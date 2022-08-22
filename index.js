@@ -1,3 +1,4 @@
+require('dotenv').config();
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const manageChoices = [
@@ -8,13 +9,12 @@ const manageChoices = [
     "View Roles",
     "View Employees"
 ]
-
 const db = mysql.createConnection(
     {
         host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'employeeManager_db'
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
     },
     console.log(`Connected to the employeeManager_db database.`)
 );
@@ -139,26 +139,22 @@ function addEmployee() {
             }
         ])
         .then((data) => {
-            db.query(`SELECT * FROM role WHERE title = ?;`, data.addToRole, function (err, results) {
-                if (err) {
-                    console.error(err);
-                }
-                db.query(`SELECT * FROM manager WHERE name = ?;`), data.addToManager, function (err, results2) {
-                    if (err) {
-                        console.error(err);
-                    }
-                    db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`,
-                        [data.employeeFirstAdd, data.employeeLastAdd, results[0].id, results2[0].id],
-                        function (err) {
-                            if (err) {
-                                console.error(err);
-                            }
-                            console.log(`${data.employeeFirstAdd} ${data.employeeLastAdd} added to employee table`);
-                            allManage();
-                        }
-                    );
-                }
-            });
+            db.promise().query("SELECT * FROM role WHERE title = ?;", data.addToRole)
+                .then(([results]) => {
+                    db.promise().query("SELECT * FROM manager WHERE name = ?;", data.addToManager)
+                        .then(([results2]) => {
+                            db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`,
+                                [data.employeeFirstAdd, data.employeeLastAdd, results[0].id, results2[0].id],
+                                function (err) {
+                                    if (err) {
+                                        console.error(err);
+                                    }
+                                    console.log(`${data.employeeFirstAdd} ${data.employeeLastAdd} added to employee table`);
+                                    allManage();
+                                })
+                        })
+                })
+                .catch((err) => console.log(err))
         })
 }
 
