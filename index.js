@@ -14,8 +14,8 @@ const manageChoices = [
     "Remove Employee"
 ];
 const updateManagerChoices = [
-    "Delete a manager",
-    "Add new manager"
+    "Add new manager",
+    "Delete a manager"
 ];
 const db = mysql.createConnection(
     {
@@ -209,13 +209,14 @@ function updateManagers() {
         type: 'list',
         message: 'What would you like to do with your managers?',
         choices: updateManagerChoices,
-        name: 'updataManagers'
+        name: 'updateManagers',
+        loop: false
     })
     .then((data) => {
-        if (data.updateManagers = updateManagerChoices[0]) {
-            deleteManager();
-        } else if (data.updateManagers = updateManagerChoices[1]) {
+        if (data.updateManagers === updateManagerChoices[0]) {
             addManager();
+        } else if (data.updateManagers === updateManagerChoices[1]) {
+            deleteManager();
         }
     })
 }
@@ -233,6 +234,7 @@ function addManager() {
                 console.log(err);
             }
             console.log(`${data.newManager} has been added to the database!`);
+            allManage();
         })
     })
 }
@@ -241,7 +243,7 @@ function deleteManager() {
     inquirer
     .prompt({
         type: 'input',
-        message: 'Which manager would you like to remove?',
+        message: 'Which manager would you like to remove? (NOTE: If your manager is assigned an employee, he/she will not be removed)',
         name: 'deleteManager'
     })
     .then((data) => {
@@ -250,6 +252,7 @@ function deleteManager() {
                 console.log(err);
             }
             console.log(`${data.deleteManager} has been removed from the database!`);
+            allManage();
         })
     })
 }
@@ -267,6 +270,7 @@ function deleteDepartment() {
                 console.log(err);
             }
             console.log(`${data.deleteDepartment} has been removed from the database!`);
+            allManage();
         })
     })
 }
@@ -291,6 +295,7 @@ function deleteEmployee() {
                 console.log(err);
             }
             console.log(`${data.delEmployeeFirst} ${data.delEmployeeLast} has been removed from the database!`);
+            allManage();
         })
     })
 }
@@ -303,11 +308,12 @@ function deleteRole() {
         name: 'deleteRole'
     })
     .then((data) => {
-        db.query(`DELETE FROM role WHERE name = ?;`, data.deleteRole, function (err) {
+        db.query(`DELETE FROM role WHERE title = ?;`, data.deleteRole, function (err) {
             if (err) {
                 console.log(err);
             }
             console.log(`${data.deleteRole} has been removed from the database!`);
+            allManage();
         })
     })
 }
