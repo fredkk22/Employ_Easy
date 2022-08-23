@@ -1,6 +1,6 @@
 module.exports = {allManage};
 require('dotenv').config();
-const { addDepartment, addRole, addEmployee, addManager } = require('./queries/add');
+const { addDepartment, addRole, addEmployee, addManager, updateEmployeeRole } = require('./queries/add');
 const { deleteDepartment, deleteRole, deleteEmployee, deleteManager } = require('./queries/delete');
 const { viewDepartments, viewRoles, viewEmployees, viewManagers, viewEmpByDept, viewEmpByManager } = require('./queries/view');
 const inquirer = require('inquirer');
@@ -8,15 +8,16 @@ const manageChoices = [
     "Add Department",
     "Add Role",
     "Add Employee",
+    "Update Employee Roles",
     "View Departments",
     "View Roles",
     "View Employees",
     "View Employees by Department",
     "View Employees by Manager",
-    "View/Update Managers", 
+    "View/Update Managers",
     "Remove Department",
     "Remove Role",
-    "Remove Employee",
+    "Remove Employee"
 ];
 const updateManagerChoices = [
     "View managers",
@@ -52,20 +53,22 @@ function allManage() {
             } else if (data.manageChoices === manageChoices[2]) {
                 addEmployee();
             } else if (data.manageChoices === manageChoices[3]) {
-                viewDepartments();
+                updateEmployeeRole();
             } else if (data.manageChoices === manageChoices[4]) {
-                viewRoles();
+                viewDepartments();
             } else if (data.manageChoices === manageChoices[5]) {
-                viewEmployees();
+                viewRoles();
             } else if (data.manageChoices === manageChoices[6]) {
-                viewEmpByDept();
+                viewEmployees();
             } else if (data.manageChoices === manageChoices[7]) {
-                viewEmpByManager();
+                viewEmpByDept();
             } else if (data.manageChoices === manageChoices[8]) {
-                updateManagers();
+                viewEmpByManager();
             } else if (data.manageChoices === manageChoices[9]) {
-                deleteDepartment();
+                updateManagers();
             } else if (data.manageChoices === manageChoices[10]) {
+                deleteDepartment();
+            } else if (data.manageChoices === manageChoices[11]) {
                 deleteRole();
             } else if (data.manageChoices === manageChoices[11]) {
                 deleteEmployee();

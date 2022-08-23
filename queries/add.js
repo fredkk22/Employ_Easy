@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-const {allManage} = require('../index');
+const { allManage } = require('../index');
 const db = mysql.createConnection(
     {
         host: 'localhost',
@@ -113,20 +113,58 @@ function addEmployee() {
 
 function addManager() {
     inquirer
-    .prompt({
-        type: 'input',
-        message: 'What is the name of the new manager?',
-        name: 'newManager'
-    })
-    .then((data) => {
-        db.query(`INSERT INTO manager (name) VALUES (?);`, data.newManager, function (err) {
-            if (err) {
-                console.log(err);
-            }
-            console.log(`${data.newManager} has been added to the database!`);
-            allManage();
+        .prompt({
+            type: 'input',
+            message: 'What is the name of the new manager?',
+            name: 'newManager'
+        })
+        .then((data) => {
+            db.query(`INSERT INTO manager (name) VALUES (?);`, data.newManager, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+                console.log(`${data.newManager} has been added to the database!`);
+                allManage();
+            });
         });
-    });
 };
 
-module.exports = { addDepartment, addRole, addEmployee, addManager }
+function updateEmployeeRole() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                message: 'What is the first name of the employee?',
+                name: 'updateEmployeeFirst'
+            },
+            {
+                type: 'input',
+                message: 'What is the last name of the employee?',
+                name: 'updateEmployeeLast'
+            },
+            {
+                type: 'input',
+                message: "What is the employee's new role?",
+                name: 'updateNewRole'
+            }
+        ])
+        .then((data) => {
+            db.promise().query("SELECT * FROM role WHERE title = ?;", data.updateNewRole)
+                .then(([results]) => {
+                    db.query(`UPDATE employee SET employee.role_id = ? WHERE employee.first_name = ? AND employee.last_name = ?;`,
+                        [results[0].id, data.updateEmployeeFirst, data.updateEmployeeLast], (err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            console.log(`${data.updateEmployeeFirst} ${data.updateEmployeeLast}'s role has been set to ${results[0].title}!`);
+                            allManage();
+                        })
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+            
+        })
+}
+
+module.exports = { addDepartment, addRole, addEmployee, addManager, updateEmployeeRole }
