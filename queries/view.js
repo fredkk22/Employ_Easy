@@ -1,5 +1,5 @@
+require('console.table');
 const mysql = require('mysql2');
-const cTable = require('console.table');
 const {allManage} = require('../index');
 const db = mysql.createConnection(
     {
@@ -40,6 +40,16 @@ function viewEmployees() {
     });
 }
 
+function viewManagers() {
+    db.query(`SELECT * FROM manager;`, function (err, results) {
+        if (err) {
+            console.error(err);
+        }
+        console.table(results);
+        allManage();
+    });
+}
+
 function viewEmpByDept() {
     db.promise().query(`SELECT role.department_id, employee.first_name, employee.last_name, employee.id
     FROM employee
@@ -62,4 +72,4 @@ function viewEmpByManager() {
     })
 }
 
-module.exports = { viewDepartments, viewRoles, viewEmployees, viewEmpByDept, viewEmpByManager };
+module.exports = { viewDepartments, viewRoles, viewEmployees, viewManagers, viewEmpByDept, viewEmpByManager };

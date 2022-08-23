@@ -75,7 +75,7 @@ function deleteManager() {
     inquirer
     .prompt({
         type: 'input',
-        message: 'Which manager would you like to remove? (NOTE: If your manager is assigned an employee, he/she will not be removed)',
+        message: 'Which manager would you like to remove?',
         name: 'deleteManager'
     })
     .then((data) => {

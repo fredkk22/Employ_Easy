@@ -1,8 +1,8 @@
 module.exports = {allManage};
 require('dotenv').config();
-const { addDepartment, addRole, addEmployee } = require('./queries/add');
+const { addDepartment, addRole, addEmployee, addManager } = require('./queries/add');
 const { deleteDepartment, deleteRole, deleteEmployee, deleteManager } = require('./queries/delete');
-const { viewDepartments, viewRoles, viewEmployees, viewEmpByDept, viewEmpByManager } = require('./queries/view');
+const { viewDepartments, viewRoles, viewEmployees, viewManagers, viewEmpByDept, viewEmpByManager } = require('./queries/view');
 const inquirer = require('inquirer');
 const manageChoices = [
     "Add Department",
@@ -13,12 +13,13 @@ const manageChoices = [
     "View Employees",
     "View Employees by Department",
     "View Employees by Manager",
-    "Update Managers", 
+    "View/Update Managers", 
     "Remove Department",
     "Remove Role",
     "Remove Employee",
 ];
 const updateManagerChoices = [
+    "View managers",
     "Add new manager",
     "Delete a manager"
 ];
@@ -83,8 +84,10 @@ function updateManagers() {
     })
     .then((data) => {
         if (data.updateManagers === updateManagerChoices[0]) {
-            addManager();
+            viewManagers();
         } else if (data.updateManagers === updateManagerChoices[1]) {
+            addManager();
+        } else if (data.updateManagers === updateManagerChoices[2]) {
             deleteManager();
         }
     })
