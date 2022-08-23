@@ -40,7 +40,7 @@ function addRole() {
             },
             {
                 type: 'input',
-                message: "What is the salary for this role?",
+                message: "What is the annual salary for this role?",
                 name: "salaryAdd"
             },
             {
