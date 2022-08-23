@@ -17,7 +17,7 @@ I was able to learn everything I listed above, and look forward to using MySQL b
 
 ## Video Recording
 
-[![Watch Video!](https://img.youtube.com/vi/RmtGSXP5Wg8/maxresdefault.jpg)](https://youtu.be/RmtGSXP5Wg8)
+[![Watch Video!](https://img.youtube.com/vi/Dw887jmw7ew/maxresdefault.jpg)](https://youtu.be/Dw887jmw7ew)
 
 ## Credits
 
