@@ -70,7 +70,7 @@ function allManage() {
                 deleteDepartment();
             } else if (data.manageChoices === manageChoices[11]) {
                 deleteRole();
-            } else if (data.manageChoices === manageChoices[11]) {
+            } else if (data.manageChoices === manageChoices[12]) {
                 deleteEmployee();
             }
         })
